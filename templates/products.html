@@ -1,0 +1,61 @@
+{% extends 'config.html' %}
+
+{% block title %}{{item.product_name}} | Quick View{% endblock%}
+
+{% block body %}
+<section class="text-gray-600 body-font overflow-hidden">
+     <div class="container px-5 py-24 mx-auto">
+       <div class="lg:w-4/5 mx-auto flex flex-wrap">
+         <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="/media/{{item.product_image}}">
+         <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
+           <h2 class="text-sm title-font text-gray-500 tracking-widest">{{item.product_subcategory}} > {{item.product_category}}</h2>
+           <h1 class="text-gray-900 text-3xl title-font font-medium mb-6">{{item.product_name}}</h1>
+  
+           <p class="leading-relaxed mb-6">{{item.product_dec}}</p>
+      
+           <div class="flex">
+             <span class="title-font font-medium text-2xl text-gray-900">Price : {{item.product_price}} INR</span>
+             <button class="flex ml-auto cart text-black bg-gray-300 border-0 py-2 px-6 focus:outline-none hover:bg-gray-400 rounded" 
+             id="product_id :: {{item.id}}">Add to Cart</button>
+             <a href="orders/{{item.id}}">
+             <button class="flex ml-3 text-white bg-blue-600 border-0 py-2 px-6 focus:outline-none hover:bg-blue-700 rounded">Buy Now</button>
+            </a>
+           </div>
+           <p class="leading-relaxed mb-10 mt-5">Product arrived on : {{item.product_date}}</p>
+         </div>
+       </div>
+     </div>
+   </section>
+{% endblock%} 
+
+
+{% block js%}
+<script>
+  console.log("working");
+  if (localStorage.getItem('cart')==null) {
+    var cart = {};
+  }
+  else {
+    cart = JSON.parse(localStorage.getItem('cart'));
+  }
+
+  $('.cart').click(function(){
+    console.log("clicked item");
+    var prod_string = this.id.toString();
+    console.log(prod_string)
+
+    if (cart[prod_string] != undefined){
+      cart[prod_string] = cart[prod_string]+1;
+    }
+    else {
+      cart[prod_string] = 1 ;
+    }
+    localStorage.setItem('cart',JSON.stringify(cart));
+    console.log(cart);
+    document.getElementById('cart').innerHTML = Object.keys(cart).length;
+
+  });
+
+  </script>
+
+{%endblock%}
